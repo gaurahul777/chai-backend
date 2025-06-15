@@ -11,8 +11,13 @@ dotenv.config({
 
 connectDB()
 .then(()=>{
+    app.on("error", (err) => {
+        console.error("🔥 App crashed due to error:", err);
+        process.exit(1); // optional: exit the app
+      });
+
     app.listen(PORT || 8000,()=>{
-        console.log(`Server is running at por : ${PORT}`)
+        console.log(`Server is running at port : ${PORT}`)
     })
 })
 .catch((err)=>{
