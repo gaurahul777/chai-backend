@@ -22,7 +22,7 @@ const {body}=req;
 throw new ApiError(400,"All Fields are Required")
     }
 
-const existUser=User.findOne({
+const existUser=await User.findOne({
     $or:[{username},{email}]
 })
 
@@ -32,7 +32,11 @@ throw new ApiError(409,"User Already Existed with email or username")
 
 const avatarLocalPath = req.files?.avatar[0]?.path ;//yha mene pehle upload keri h files now usne hume uska local path diya hain console ker ke aur read keriye
 
-const coverImageLocalPath = req.files?.coverImage[0].path;
+// const coverImageLocalPath = req.files?.coverImage[0].path;
+let coverImageLocalPath;
+if(req.files && Array.isArray(req.files.coverImage) && req.files.coverImage.lenght>0){
+    coverImageLocalPath = req.files.coverImage[0].path
+}
 
 if(!avatarLocalPath){
 throw new ApiError(400,"Avatar file is required")
