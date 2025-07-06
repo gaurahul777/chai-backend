@@ -12,9 +12,8 @@ try {
     throw new ApiError(401,"Unauthorized request")
     }
     
-    const decodedToken= jwt.verify(token,process.env.ACCSS_TOKEN_SECRET) //jab apne token bnaya tha usme kuch chheje daali thi like id aur sari chheje 
+    const decodedToken= jwt.verify(token,process.env.ACCESS_TOKEN_SECRET) //jab apne token bnaya tha usme kuch chheje daali thi like id aur sari chheje 
     // aur han remember ki koi bhi aese data leke same bna sakta hain but secret key nhi ho to kuch bhi nhi ker payega
-    
     const user =await User.findById(decodedToken?._id).select("-password -refreshToken")
     
     if(!user){
@@ -24,7 +23,9 @@ try {
     req.user=user;
     next();
 } catch (error) {
+    console.log(error)
     throw new ApiError(401,error?.message || "Invalid access token")
 }
 
 })
+
